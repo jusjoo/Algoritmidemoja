@@ -18,33 +18,37 @@ public class ClosestPair implements ApplicationListener {
 	
 	private ArrayList<Point> points;
 	private SpriteBatch batch;
-	
-	private FPSLogger fpsLogger;
-	
+		
 	private Texture pointTexture;
 	private Texture pointSelectedTexture;
 	
 	@Override
 	public void create() {
-		// TODO Auto-generated method stub
-		fpsLogger = new FPSLogger();
+		
 		batch = new SpriteBatch();
-		
 		points = new ArrayList<Point>();
-		points.add(new Point(100,100));
-		
+	
 		
 		createTextures();
 		
 	}
 
 	private void createTextures() {
-		int size = 8;
+		int size = AppConfig.pointSize;
+		
+		// pointTexture creation
 		Pixmap pixmap = new Pixmap(size,size,Pixmap.Format.RGB565);
 		pointTexture = new Texture(pixmap);
-		pixmap.setColor(new Color(0f,0f,1f,1f));
+		pixmap.setColor(AppConfig.pointColor);
 		pixmap.fill();
 		pointTexture.draw(pixmap, 0, 0);
+		
+		// pointSelectedTexture creation
+		Pixmap pixmap2 = new Pixmap(size,size,Pixmap.Format.RGB565);
+		pointSelectedTexture = new Texture(pixmap);
+		pixmap2.setColor(AppConfig.pointSelectedColor);
+		pixmap2.fill();
+		pointSelectedTexture.draw(pixmap2, 0, 0);
 	}
 
 	@Override
@@ -64,7 +68,6 @@ public class ClosestPair implements ApplicationListener {
 		
 		update();
 		
-		
         Gdx.gl.glClearColor( 0f,0.1f, 0.1f, 1f );
         Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT );	
         
@@ -74,11 +77,38 @@ public class ClosestPair implements ApplicationListener {
 	}
 
 	private void update() {
+		handleInput();
+	}
+
+	private void handleInput() {
+		
 		if (Gdx.input.justTouched()) {
+			handleClick(Gdx.input.getX(), Gdx.graphics.getHeight()-Gdx.input.getY());
 			
-			points.add(new Point(Gdx.input.getX(), Gdx.graphics.getHeight()-Gdx.input.getY()));
-			
-			
+		}
+	}
+
+	private void handleClick(int x, int y) {
+		Point deleted = null;
+		int checkRange = AppConfig.pointSize;
+		
+		// check if the click is within an existing points range
+		for (Point p : points) {
+	
+			if (	p.getX() < x + checkRange && p.getX() > x - checkRange	&& 
+					p.getY() < y + checkRange && p.getY() > y - checkRange) {
+				deleted = p;
+				break;
+			}
+		}
+		
+		// no near point found, add new
+		if (deleted == null) {
+			points.add(new Point(x, y));
+		}
+		// else remove the found point
+		else {
+			points.remove(deleted);
 		}
 	}
 
