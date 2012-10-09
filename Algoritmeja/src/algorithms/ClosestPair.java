@@ -52,15 +52,11 @@ public class ClosestPair implements ApplicationListener {
 	}
 
 	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
-		
+	public void dispose() {		
 	}
 
 	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-		
+	public void pause() {		
 	}
 
 	@Override
