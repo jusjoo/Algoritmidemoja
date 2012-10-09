@@ -16,7 +16,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class ClosestPair implements ApplicationListener {
 
 	
-	private ArrayList<Point> points;
+	private ClosestPairAlgorithm algorithm;
 	private SpriteBatch batch;
 		
 	private Texture pointTexture;
@@ -115,23 +115,17 @@ public class ClosestPair implements ApplicationListener {
 	private void renderPoints() {
 		
 		for (Point p : points) {
-			p.draw(batch, pointTexture);			
-			
-		}
-		
-		
-		
+			p.draw(batch, pointTexture);						
+		}	
 	}
 
 	@Override
 	public void resize(int arg0, int arg1) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
 		
 	}
 
