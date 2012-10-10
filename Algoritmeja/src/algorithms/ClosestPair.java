@@ -1,12 +1,7 @@
 package algorithms;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -26,7 +21,7 @@ public class ClosestPair implements ApplicationListener {
 	public void create() {
 		
 		batch = new SpriteBatch();
-		points = new ArrayList<Point>();
+		algorithm = new ClosestPairAlgorithm();
 	
 		
 		createTextures();
@@ -89,7 +84,7 @@ public class ClosestPair implements ApplicationListener {
 		int checkRange = AppConfig.pointSize;
 		
 		// check if the click is within an existing points range
-		for (Point p : points) {
+		for (Point p : algorithm.getPoints()) {
 	
 			if (	p.getX() < x + checkRange && p.getX() > x - checkRange	&& 
 					p.getY() < y + checkRange && p.getY() > y - checkRange) {
@@ -100,17 +95,17 @@ public class ClosestPair implements ApplicationListener {
 		
 		// no near point found, add new
 		if (deleted == null) {
-			points.add(new Point(x, y));
+			algorithm.add(new Point(x, y));
 		}
 		// else remove the found point
 		else {
-			points.remove(deleted);
+			algorithm.remove(deleted);
 		}
 	}
 
 	private void renderPoints() {
 		
-		for (Point p : points) {
+		for (Point p : algorithm.getPoints()) {
 			p.draw(batch, pointTexture);						
 		}	
 	}
